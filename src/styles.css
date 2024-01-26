@@ -1,0 +1,7 @@
+:root {
+    --navbar-height: 10px;
+  }
+
+  .custom-vh-100 {
+    min-height: calc(95vh - var(--navbar-height));
+  }
