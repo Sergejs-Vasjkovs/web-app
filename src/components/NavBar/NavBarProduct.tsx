@@ -19,6 +19,7 @@ const NavBarProduct = ({ onClick }: NavBarProductProps) => {
             <div>
                 <button
                     type="submit"
+                    name="save"
                     className="btn btn-success ms-3"
                     onClick={onClick}
                 >
@@ -26,6 +27,7 @@ const NavBarProduct = ({ onClick }: NavBarProductProps) => {
                 </button>
                 <button
                     type="button"
+                    name="cancel"
                     className="btn btn-danger ms-3"
                     onClick={handleCancelClick}
                 >

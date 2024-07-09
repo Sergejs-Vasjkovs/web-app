@@ -19,6 +19,7 @@ const NavBarMain = ({ onClick }: NavBarMainProps) => {
             <div>
                 <button
                     type="button"
+                    name="add"
                     className="btn btn-success ms-3"
                     onClick={handleClick}
                 >
@@ -27,6 +28,7 @@ const NavBarMain = ({ onClick }: NavBarMainProps) => {
                 <button
                     id="delete-product-btn"
                     type="button"
+                    name="delete"
                     className="btn btn-danger ms-3"
                     onClick={onClick}
                 >

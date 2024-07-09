@@ -1,6 +1,6 @@
 import NavBarMain from "../../components/NavBar/NavBarMain";
 import React, { useEffect, useState } from "react";
-import ProductCard from "../../components/ProductCard";
+import ProductCard, { OptionsType } from "../../components/ProductCard";
 import productService from "../../services/product.service";
 import { useSKU } from "../../hooks/useSKU";
 
@@ -10,6 +10,7 @@ export type ProductListType = {
     name: string;
     price: string;
     type: string;
+    options: OptionsType;
     created_at: string;
 };
 
@@ -30,10 +31,10 @@ const ProductList = () => {
 
     const getDataFromServer = async () => {
         try {
-            const { data } = await productService.get();
-            console.warn("Response", data);
-            setProductList(data);
-            getAllSKUnumbers(data);
+            const response = await productService.get();
+            console.warn("Response:", response);
+            setProductList(response);
+            getAllSKUnumbers(response);
         } catch (error) {
             console.error("Error during GET request:", error);
         }
@@ -45,6 +46,7 @@ const ProductList = () => {
                 data: checkbox
             });
             console.warn("Response", response);
+            await getDataFromServer();
         } catch (error) {
             console.error("Error during DELETE request:", error);
         }

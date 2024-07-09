@@ -1,31 +1,26 @@
+import { OptionsType } from "../components/ProductCard";
 import React from "react";
 
 type AttributesInfoProps = {
+    options: OptionsType;
     type: string;
 };
 
-const AttributesInfo = ({ type }: AttributesInfoProps) => {
-    const convertedType = JSON.parse(type);
-    const keys = Object.keys(convertedType);
-    const switchetType = keys[0];
-
+const AttributesInfo = ({ options, type }: AttributesInfoProps) => {
     return (
         <>
-            {switchetType === "dvd" && (
+            {type === "DVD" && (
+                <p className="card-text text-center">Size: {options.size} MB</p>
+            )}
+            {type === "Furniture" && (
                 <p className="card-text text-center">
-                    Size: {convertedType[switchetType].size}MB
+                    Dimention: <br />
+                    {options.width}x{options.height}x{options.length} CM
                 </p>
             )}
-            {switchetType === "furniture" && (
+            {type === "Book" && (
                 <p className="card-text text-center">
-                    Dimention: {convertedType[switchetType].width}x
-                    {convertedType[switchetType].height}x
-                    {convertedType[switchetType].length}x
-                </p>
-            )}
-            {switchetType === "book" && (
-                <p className="card-text text-center">
-                    Weight: {convertedType[switchetType].weight}KG
+                    Weight: {options.weight} KG
                 </p>
             )}
         </>

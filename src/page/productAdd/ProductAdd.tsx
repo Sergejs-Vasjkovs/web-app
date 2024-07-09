@@ -25,7 +25,7 @@ export type PostDataType = {
     sku: string;
     name: string;
     price: string;
-    type: object;
+    type: string;
 };
 
 export type ErrorType = {
@@ -65,20 +65,20 @@ const ProductAdd = () => {
         if (!isValid) return;
         const data = {
             ...product,
-            type: {
-                [type]: typeInput
-            }
+            type,
+            options: typeInput
         };
         postDataToServer(data);
-        history.push("/");
     };
-
     const postDataToServer = async (data: PostDataType) => {
         try {
             const response = await productService.post(data);
             console.warn("Response", response);
+            history.push("/");
         } catch (error) {
             console.error("Error during POST request:", error);
+            // @ts-expect-error - receive error from php. need to check TS type
+            setErrors(error.response.data.errors);
         }
     };
 
