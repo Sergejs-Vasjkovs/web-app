@@ -1,48 +1,89 @@
 <?php
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: *");
-    header("Access-Control-Allow-Methods: *");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: *");
+header('Content-Type: application/json');
 
-    include 'DbConnect.php';
-    include 'ProductSaveRepository.php';
-    include 'ProductDeleteRepository.php';
-    include 'Product.php';
+require_once __DIR__ . "/config/DbConnect.php";
+require_once __DIR__ . "./controllers/ProductsController.php";
 
-    $objDb = new DbConnect;
-    $conn = $objDb->connect();
+require_once __DIR__ . "/funcs.php";
 
-    $method = $_SERVER['REQUEST_METHOD'];
+$db_config = require __DIR__ . "/config/db.php";
 
-    switch ($method) {
-        case "POST":
-            $productData = json_decode(file_get_contents('php://input'));
+$database = new DbConnect();
+$db = $database->connect($db_config);
 
-            $product = new Product();
-            $product->setSku($productData->sku);
-            $product->setName($productData->name);
-            $product->setPrice($productData->price);
-            $product->setType($productData->type);
+$controller = new ProductsController($db);
+$controller->handleRequestMethod($_SERVER['REQUEST_METHOD']);
 
-            $productRepository = new ProductSaveRepository($conn, $product);
-            echo json_encode($productRepository->execute());
-            break;
 
-        case "GET":
-            try {
-                $sql = "SELECT * FROM product";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute();
-                $product = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                echo json_encode(['status' => 1, 'data' => $product]);
-            } catch (Exception $e) {
-                echo json_encode(['status' => 0, 'message' => 'Failed to retrieve products.']);
-            }
-            break;
 
-        case "DELETE":
-            $checkbox = json_decode(file_get_contents('php://input'), true);
-            $productRepository = new ProductDeleteRepository($conn, $checkbox);
-            echo json_encode($productRepository->execute());
-            break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+require_once __DIR__ . "/funcs.php";
+require_once __DIR__ . "/classes/Product.php";
+
+//require_once __DIR__ . '/public/Db';
+//require_once __DIR__ . '/funcs.php';
+
+//$method = $_SERVER['REQUEST_METHOD']; // return POST
+
+$data = json_decode(file_get_contents("php://input"));
+
+if (!empty($data)) {
+    $product = new Product();
+    $product->setSku($data->sku);
+    $product->setName($data->name);
+    $product->setPrice($data->price);
+    $product->setType($data->type);
+    debug($product);
+}
+
+addProduct($data);
+
+function addProduct($data)
+{
+    global $pdo;
+
+    function is_valid($value)
+    {
+        return isset($value) && trim($value) !== '';
     }
-?>
+
+    // Validate the input data
+
+
+
+    $sku = !empty($data->sku) ? trim($data->sku) : "";
+    $name = !empty($data->name) ? trim($data->name) : "";
+    $price = !empty($data->price) ? trim($data->price) : "";
+    $type = !empty($data->type) ? trim($data->type) : "";
+
+    if (empty($sku) || empty($name) || empty($price) || empty($type)) {
+        echo json_encode(['message' => 'All fields are required and must not be empty']);
+    }
+}
+
+function is_valid($value)
+{
+    return !empty($value) ? trim($value) : "";
+}
+    */
